@@ -118,7 +118,6 @@ class GameModelTests( TestCase ):
         )
 
         guess = 'Q'
-
         game.handleGuess(guess)
         expectedLettersAvailable = [letter for letter in initialLettersAvailable if not letter in [guess]]
         self.assertEqual( game.letters_available, expectedLettersAvailable )
@@ -155,18 +154,59 @@ class GameModelTests( TestCase ):
         self.assertEqual( game.letters_guessed, expectedLettersGuessed )
 
     ### is_game_over field
-    # TODO: add tests
     # HINT: considering adding a fixture or other widely scoped variables if you feel ]hat will
     #  make this easier
 
     def test_is_game_over_is_false_if_guesses_left( self ):
-        pass
+        initialLettersGuessed = ['S', 'A', 'W', 'O', 'R','C']
+        game = Game( 
+            word= 'TESTWORD',
+            guessed_word_state= ['','','S','','W','O','R',''],
+            letters_guessed = initialLettersGuessed.copy(),
+            guesses_allowed= 5, 
+            guesses_taken= 2
+        )
+       
+        guesses_left = game.guesses_allowed - game.guesses_taken
+        updateIsGameOver = guesses_left == game.guessed_word_state
+        self.assertEqual( game.is_game_over, updateIsGameOver)
 
     def test_is_game_over_is_false_if_not_all_letters_guessed( self ):
-        pass
+        initialLettersGuessed = ['S', 'A', 'W', 'O', 'R','C']
+        game = Game( 
+            word= 'TESTWORD',
+            guessed_word_state= ['','','S','','W','O','R',''],
+            letters_guessed = initialLettersGuessed.copy(),
+            guesses_allowed= 5, 
+            guesses_taken= 2
+        )
+       
+        letters = game.letters_guessed != game.word
+        updateIsGameOver = game.letters_available == letters
+        self.assertEqual( game.is_game_over, updateIsGameOver)
 
     def test_is_game_over_is_true_if_no_guesses_left( self ):
-        pass
+        initialLettersGuessed = ['S', 'A', 'W', 'O', 'R','C']
+        game = Game( 
+            word= 'TESTWORD',
+            guessed_word_state= ['','','S','','W','O','R',''],
+            letters_guessed = initialLettersGuessed.copy(),
+            guesses_allowed= 5, 
+            guesses_taken= 5
+        )
+       
+        updateIsGameOver = game.guesses_allowed - game.guesses_taken
+        self.assertEqual( game.is_game_over, updateIsGameOver)
 
     def test_is_game_over_is_true_if_all_letters_guessed( self ):
-        pass
+        initialLettersGuessed = ['S', 'A', 'W', 'O', 'R','C']
+        game = Game( 
+            word= 'TESTWORD',
+            guessed_word_state= ['','','S','','W','O','R',''],
+            letters_guessed = initialLettersGuessed.copy(),
+            guesses_allowed= 5, 
+            guesses_taken= 5
+        )
+       
+        updateIsGameOver = game.guessed_word_state == game.word
+        self.assertEqual( game.is_game_over, updateIsGameOver)
